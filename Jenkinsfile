@@ -27,8 +27,10 @@ pipeline {
                         if ! command -v docker &> /dev/null
                         then
                             echo "Docker not found, installing Docker..."
-                            # Install Docker (for Alpine Linux)
-                            apk add --no-cache docker-cli
+                            # Install Docker (for macOS)
+                            brew install --cask docker
+                            open /Applications/Docker.app
+
                         else
                             echo "Docker is already installed."
                         fi
