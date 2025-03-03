@@ -27,11 +27,8 @@ pipeline {
                         if ! command -v docker &> /dev/null
                         then
                             echo "Docker not found, installing Docker..."
-                            # Install Docker (for Ubuntu/Debian systems)
-                            sudo apt-get update
-                            sudo apt-get install -y docker.io
-                            sudo systemctl start docker
-                            sudo systemctl enable docker
+                            # Install Docker (for Alpine Linux)
+                            apk add --no-cache docker-cli
                         else
                             echo "Docker is already installed."
                         fi
