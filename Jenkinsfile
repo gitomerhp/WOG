@@ -27,10 +27,17 @@ pipeline {
                         if ! command -v docker &> /dev/null
                         then
                             echo "Docker not found, installing Docker..."
+                            # install Homebrew (for macOS)
+                            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                            echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+                            eval "$(/opt/homebrew/bin/brew shellenv)"
+
                             # Install Docker (for macOS)
                             brew install --cask docker
                             open /Applications/Docker.app
-
+                            
+                            # print docker version
+                            docker --version
                         else
                             echo "Docker is already installed."
                         fi
