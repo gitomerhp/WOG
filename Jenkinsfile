@@ -20,13 +20,29 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    echo "Checking if Docker is installed..."
+
+                    // Check Docker version, and install if it's not available
+                    sh '''
+                        if ! command -v docker &> /dev/null
+                        then
+                            echo "Docker not found, installing Docker..."
+                            # Install Docker (for Ubuntu/Debian systems)
+                            sudo apt-get update
+                            sudo apt-get install -y docker.io
+                            sudo systemctl start docker
+                            sudo systemctl enable docker
+                        else
+                            echo "Docker is already installed."
+                        fi
+                    '''
+
                     echo "Building Docker image..."
                     sh 'docker --version'
                     sh 'docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .'
                 }
             }
         }
-
         stage('Run') {
             steps {
                 script {
