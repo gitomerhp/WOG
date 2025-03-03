@@ -1,6 +1,9 @@
 # Use a lightweight Alpine-based Python image
 FROM python:3.9-alpine
 
+# Install Docker CLI
+RUN apk add --no-cache docker-cli
+
 # Set the working directory inside the container
 WORKDIR /app
 
