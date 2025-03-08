@@ -1,6 +1,29 @@
 version: '3.8'
 
 services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket for Jenkins
+
+  docker:
+    image: docker:dind
+    container_name: docker_dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=""
+    ports:
+      - "2376:2376"  # Expose Docker API for Jenkins
+    volumes:
+      - docker_data:/var/lib/docker
+
   flask-app:
     build: .
     container_name: flask_app_container
@@ -11,4 +34,10 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
+    depends_on:
+      - docker
     command: ["python", "-m", "main_score", "run", "--host=0.0.0.0", "--port=5000"]
+
+volumes:
+  jenkins_home:
+  docker_data:
