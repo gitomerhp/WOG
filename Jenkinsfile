@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker 'docker:latest' 
-    }
+    agent any
 
     environment {
         DOCKER_IMAGE_NAME = "my-flask-app"  // Name of your Docker image
@@ -16,6 +14,17 @@ pipeline {
             steps {
                 echo "Checking out the repository..."
                 checkout scm
+            }
+        }           
+        stage('Install Docker') {
+            steps {
+                sh '''
+                if ! command -v docker &> /dev/null; then
+                    echo "Installing Docker..."
+                    sudo apt-get update
+                    sudo apt-get install -y docker.io
+                fi
+                '''
             }
         }
      
