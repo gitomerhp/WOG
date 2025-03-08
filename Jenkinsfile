@@ -16,33 +16,10 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Build') {
+     
+        stage('Build Docker Image') {
             steps {
                 script {
-                    echo "Checking if Docker is installed..."
-
-                    // Check Docker version, and install if it's not available
-                    sh '''
-                        if ! command -v docker &> /dev/null
-                        then
-                            echo "Docker not found, installing Docker..."
-                            # install Homebrew (for macOS)
-                            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                            echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-                            eval "$(/opt/homebrew/bin/brew shellenv)"
-
-                            # Install Docker (for macOS)
-                            brew install --cask docker
-                            open /Applications/Docker.app
-                            
-                            # print docker version
-                            docker --version
-                        else
-                            echo "Docker is already installed."
-                        fi
-                    '''
-
                     echo "Building Docker image..."
                     sh 'docker --version'
                     sh 'docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .'
