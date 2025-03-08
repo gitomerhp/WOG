@@ -15,18 +15,7 @@ pipeline {
                 echo "Checking out the repository..."
                 checkout scm
             }
-        }           
-        stage('Install Docker') {
-            steps {
-                sh '''
-                if ! command -v docker &> /dev/null; then
-                    echo "Installing Docker..."
-                    sudo apt-get update
-                    sudo apt-get install -y docker.io
-                fi
-                '''
-            }
-        }
+        }                   
      
         stage('Build Docker Image') {
             steps {
