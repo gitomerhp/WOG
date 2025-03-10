@@ -45,7 +45,7 @@ pipeline {
                     sh """
                         docker run -d \
                         --name flask_app_container \
-                        -p 8777:5000 \
+                        -p $FLASK_PORT_OUT:$FLASK_PORT \
                         -v "$WORKSPACE/Scores.txt:/app/Scores.txt" \
                         -e FLASK_ENV=development \
                         $DOCKER_IMAGE_NAME:$DOCKER_TAG python -m main_score run --host=0.0.0.0 --port=$FLASK_PORT
@@ -60,8 +60,9 @@ pipeline {
                             sleep 0.4
                         done
                     """
-                    // test from container
-                    sh """docker exec -it flask_app_container curl -s http://localhost:5000/ && break"""                    
+                    // test from container                    
+                    sh """docker exec flask_app_container curl -s http://localhost:5000/ && break"""
+                
                 }
             }
         }
