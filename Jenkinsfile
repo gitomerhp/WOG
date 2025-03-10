@@ -34,18 +34,7 @@ pipeline {
                     def containerName = "flask_app_container_${BUILD_ID}"  // Use Jenkins build ID for uniqueness                    
                     echo "Running Flask container with dynamic name: ${containerName}..."
                     
-                    //sh "docker run
-                    //    --name ${containerName}                    
-                    //    -p 8777:5000 
-                    //    -v ./scores.txt:/app/scores.txt 
-                    //    -e FLASK_APP=app.py 
-                    //    -e FLASK_ENV=development 
-                    //    python:3.9-alpine python -m main_score run --host=0.0.0.0 --port=5000"
-                    
-                    
-                    
                     // Create a dummy Scores.txt file and mount it to the container
-                    sh 'echo "dummy data" > Scores.txt'
                     sh """
                     docker run -d \
                         --name ${containerName} \
@@ -53,6 +42,12 @@ pipeline {
                         -v \$(pwd)/Scores.txt:/app/Scores.txt \
                         $DOCKER_IMAGE_NAME:$DOCKER_TAG
                     """
+                    try {
+                        sh 'python3 main_score.py'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Tests failed! Stopping pipeline."
+                    }
                 }
             }
         }
