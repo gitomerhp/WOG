@@ -57,6 +57,12 @@ pipeline {
                         -e FLASK_ENV=development \
                         $DOCKER_IMAGE_NAME:$DOCKER_TAG python -m main_score run --host=0.0.0.0 --port=$FLASK_PORT
                     """
+
+                    // Wait a few seconds for Flask to start
+                    sleep 1
+
+                    // Check if the container is running
+                    sh "docker ps | grep flask_app_container || (echo 'Flask container is not running!' && exit 1)"
                 }
             }
         }
