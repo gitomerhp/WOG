@@ -24,7 +24,7 @@ def test_scores_service(app_url):
         # check if server is running
         response = requests.get(app_url, timeout=3)
         response.raise_for_status()
-        score = driver.find_element(By.ID, "stam mashu").text
+        score = driver.find_element(By.ID, "score").text
         if 1 <= int(score) <= 1000:
             return True
         else:
