@@ -7,7 +7,7 @@ pipeline {
         DOCKER_TAG = "latest"               // Docker tag, adjust as needed
         DOCKERHUB_USERNAME = "your_dockerhub_username" // Your DockerHub username
         DOCKERHUB_PASSWORD = "your_dockerhub_password" // Your DockerHub password
-        FLASK_PORT = "8777"
+        FLASK_PORT = "5000"
     }
 
     stages {
