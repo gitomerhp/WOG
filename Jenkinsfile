@@ -31,23 +31,32 @@ pipeline {
             steps {
                 script {
                     echo "Running the Dockerized application..."
-                    def containerName = "flask_app_container_${BUILD_ID}"  // Use Jenkins build ID for uniqueness                    
-                    echo "Running Flask container with dynamic name: ${containerName}..."
+                    def containerName = "flask_app_container"
+                    echo "Running Flask container name: ${containerName}..."
                     
                     // Create a dummy Scores.txt file and mount it to the container
+                    //sh """
+                    //docker run -d \
+                    //    --name ${containerName} \
+                    //    -p $FLASK_PORT:$FLASK_PORT \
+                    //    -v \$(pwd)/Scores.txt:/app/Scores.txt \
+                    //    $DOCKER_IMAGE_NAME:$DOCKER_TAG
+                    //"""
+                    
+                    echo "Stopping any existing container using port 5000..."
                     sh """
-                    docker run -d \
-                        --name ${containerName} \
-                        -p $FLASK_PORT:$FLASK_PORT \
-                        -v \$(pwd)/Scores.txt:/app/Scores.txt \
-                        $DOCKER_IMAGE_NAME:$DOCKER_TAG
+                        docker ps -aq --filter "name=flask_app_container" | xargs -r docker stop | xargs -r docker rm
                     """
-                    try {
-                        sh 'python3 main_score.py'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Tests failed! Stopping pipeline."
-                    }
+
+                    echo "Running Flask application in detached mode..."
+                    sh """
+                        docker run -d \
+                        --name flask_app_container \
+                        -p $FLASK_PORT:$FLASK_PORT \
+                        -v "$WORKSPACE/Scores.txt:/app/Scores.txt" \
+                        -e FLASK_ENV=development \
+                        $DOCKER_IMAGE_NAME:$DOCKER_TAG python -m main_score run --host=0.0.0.0 --port=$FLASK_PORT
+                    """
                 }
             }
         }
