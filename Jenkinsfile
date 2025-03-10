@@ -35,15 +35,7 @@ pipeline {
                     def containerName = "flask_app_container"
                     echo "Running Flask container name: ${containerName}..."
                     
-                    // Create a dummy Scores.txt file and mount it to the container
-                    //sh """
-                    //docker run -d \
-                    //    --name ${containerName} \
-                    //    -p $FLASK_PORT:$FLASK_PORT \
-                    //    -v \$(pwd)/Scores.txt:/app/Scores.txt \
-                    //    $DOCKER_IMAGE_NAME:$DOCKER_TAG
-                    //"""
-                    
+                   
                     echo "Stopping any existing container using port 5000..."
                     sh """
                         docker ps -aq --filter "name=flask_app_container" | xargs -r docker stop | xargs -r docker rm
@@ -59,11 +51,15 @@ pipeline {
                         $DOCKER_IMAGE_NAME:$DOCKER_TAG python -m main_score run --host=0.0.0.0 --port=$FLASK_PORT
                     """
 
-                    // Wait a few seconds for Flask to start
-                    sleep 1
-
-                    // Check if the container is running
-                    sh "docker ps | grep flask_app_container || (echo 'Flask container is not running!' && exit 1)"
+                    // Wait for Flask to be ready
+                    sh """
+                        echo "Waiting for Flask app to start..."
+                        for i in {1..30}; do  # Retry up to 30 times (30 seconds)
+                            curl --silent --fail http://localhost:5000/healthcheck && break
+                            echo "Flask app not ready yet..."
+                            sleep 1
+                        done
+                    """
                 }
             }
         }
