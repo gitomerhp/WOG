@@ -9,7 +9,7 @@ services:
     volumes:
       - ./scores.txt:/app/scores.txt
     environment:
-      - FLASK_APP=app.py
+      - FLASK_APP=main_score.py
       - FLASK_ENV=development
     depends_on:
       - docker
