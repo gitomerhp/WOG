@@ -8,6 +8,7 @@ pipeline {
         DOCKERHUB_USERNAME = "your_dockerhub_username" // Your DockerHub username
         DOCKERHUB_PASSWORD = "your_dockerhub_password" // Your DockerHub password
         FLASK_PORT = "5000"
+        FLASK_PORT_OUT = "8777"
     }
 
     stages {
@@ -52,7 +53,7 @@ pipeline {
                     sh """
                         docker run -d \
                         --name flask_app_container \
-                        -p $FLASK_PORT:$FLASK_PORT \
+                        -p $FLASK_PORT_OUT:$FLASK_PORT \
                         -v "$WORKSPACE/Scores.txt:/app/Scores.txt" \
                         -e FLASK_ENV=development \
                         $DOCKER_IMAGE_NAME:$DOCKER_TAG python -m main_score run --host=0.0.0.0 --port=$FLASK_PORT
