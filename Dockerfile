@@ -25,7 +25,7 @@ COPY scores.txt /app/scores.txt
 EXPOSE 5000
 
 # Set environment variable to avoid the need for FLASK_APP
-ENV FLASK_APP=app.py
+ENV FLASK_APP=main_score.py
 
 # Run Flask as the command
 CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]
