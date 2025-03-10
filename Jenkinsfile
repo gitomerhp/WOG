@@ -60,6 +60,8 @@ pipeline {
                             sleep 1
                         done
                     """
+                    
+                    sh "docker inspect flask_app_container | grep -i port"
                 }
             }
         }
