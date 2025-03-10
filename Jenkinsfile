@@ -55,13 +55,13 @@ pipeline {
                     sh """
                         echo "Waiting for Flask app to start..."
                         for i in {1..5}; do  # Retry up to 30 times (30 seconds)
-                            curl --silent --fail http://localhost:5000/healthcheck && break
+                            curl --silent --fail http://localhost:5000/healthcheck && break                            
                             echo "Flask app not ready yet..."
                             sleep 0.4
                         done
                     """
-                    sh "docker ps -a"
-                    sh "docker inspect flask_app_container | grep -i port"
+                    // test from container
+                    sh """docker exec -it flask_app_container curl -s http://localhost:5000/ && break"""                    
                 }
             }
         }
