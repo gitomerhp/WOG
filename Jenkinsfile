@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {   
-        //PATH = "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin" // Add necessary directories to PATH
+        PATH = "/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin" // Add necessary directories to PATH
         DOCKER_IMAGE_NAME = "my-flask-app"  // Name of your Docker image
         DOCKER_TAG = "latest"               // Docker tag, adjust as needed
         DOCKERHUB_USERNAME = "your_dockerhub_username" // Your DockerHub username
