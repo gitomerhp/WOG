@@ -61,7 +61,7 @@ pipeline {
                         done
                     """
                     // test from container                    
-                    sh """docker exec flask_app_container curl -s http://localhost:5000/ && break"""
+                    sh """docker exec flask_app_container nc -zv localhost 5000 && break"""
                 
                 }
             }
