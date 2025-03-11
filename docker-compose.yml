@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build: .
+    container_name: flask_app_container
+    ports:
+      - "8777:5000"
+    volumes:
+      - ./scores.txt:/app/scores.txt
+    environment:
+      - FLASK_APP=main_score.py
+      - FLASK_ENV=development
+    depends_on:
+      - docker
+    command: ["python", "-m", "main_score", "run", "--host=0.0.0.0", "--port=5000"]
+
+volumes:
+  jenkins_home:
+  docker_data:
