@@ -52,10 +52,10 @@ def main_function():
     # Wait for Flask to be ready
     #APP_URL = "http://127.0.0.1:5000/"
     APP_URL = "http://localhost:5000"
-    """
+    
     for i in range(30):  # Try for 30 seconds
         try:
-            response = requests.get(flask_url)
+            response = requests.get(APP_URL)
             if response.status_code == 200:
                 print("Flask is up!")
                 break
@@ -64,7 +64,7 @@ def main_function():
             time.sleep(1)
     else:
         raise RuntimeError("Flask never started!")
-    """
+        
     # test
     if test_scores_service(APP_URL):
         return 0
