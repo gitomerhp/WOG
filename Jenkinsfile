@@ -60,7 +60,7 @@ pipeline {
                     echo "Running Selenium tests..."
                     // Assuming e2e.py is located at the root of the repository
                     try {
-                        sh 'python3 e2e.py'
+                        sh 'python3 tests/e2e.py'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Tests failed! Stopping pipeline."
