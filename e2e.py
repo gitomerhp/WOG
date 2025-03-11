@@ -49,10 +49,10 @@ def main_function():
     """call our tests function,
      and return -1 as an OS exit code if the tests failed and 0 if they passed"""
 
-    # Wait for Flask to be ready
     APP_URL = "http://127.0.0.1:5000/"
 
-    for i in range(30):  # Try for 30 seconds
+    # Wait for Flask to be ready
+    for i in range(30):
         try:
             response = requests.get(APP_URL)
             if response.status_code == 200:
