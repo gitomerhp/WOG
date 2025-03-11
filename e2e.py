@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import chromedriver_autoinstaller
 from selenium.webdriver.common.by import By
+import time
 
 # setup chrome
 opt = webdriver.ChromeOptions()
@@ -48,7 +49,23 @@ def main_function():
     """call our tests function,
      and return -1 as an OS exit code if the tests failed and 0 if they passed"""
 
-    APP_URL = "http://127.0.0.1:5000/"
+    # Wait for Flask to be ready
+    #APP_URL = "http://127.0.0.1:5000/"
+    APP_URL = "http://localhost:5000"
+    """
+    for i in range(30):  # Try for 30 seconds
+        try:
+            response = requests.get(flask_url)
+            if response.status_code == 200:
+                print("Flask is up!")
+                break
+        except requests.exceptions.ConnectionError:
+            print(f"Waiting for Flask ({i+1}/30)...")
+            time.sleep(1)
+    else:
+        raise RuntimeError("Flask never started!")
+    """
+    # test
     if test_scores_service(APP_URL):
         return 0
     else:
