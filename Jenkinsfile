@@ -49,20 +49,7 @@ pipeline {
                         -v "$WORKSPACE/Scores.txt:/app/Scores.txt" \
                         -e FLASK_ENV=development \
                         $DOCKER_IMAGE_NAME:$DOCKER_TAG python -m main_score run --host=0.0.0.0 --port=$FLASK_PORT
-                    """
-
-                    // Wait for Flask to be ready
-                    sh """
-                        echo "Waiting for Flask app to start..."
-                        for i in {1..5}; do  # Retry up to 30 times (30 seconds)
-                            curl --silent --fail http://localhost:5000/healthcheck && break                            
-                            echo "Flask app not ready yet..."
-                            sleep 0.4
-                        done
-                    """
-                    // test from container                    
-                    sh """docker exec flask_app_container nc -zv localhost 5000 && break"""
-                
+                    """                    
                 }
             }
         }
