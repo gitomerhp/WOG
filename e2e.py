@@ -50,8 +50,8 @@ def main_function():
      and return -1 as an OS exit code if the tests failed and 0 if they passed"""
 
     # Wait for Flask to be ready
-    #APP_URL = "http://127.0.0.1:5000/"
-    APP_URL = "http://localhost:5000"
+    APP_URL = "http://127.0.0.1:5000/"
+    #APP_URL = "http://localhost:5000"
     
     for i in range(30):  # Try for 30 seconds
         try:
